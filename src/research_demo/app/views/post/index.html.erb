@@ -1,0 +1,40 @@
+<p>Le Anh Thang</p>
+
+<p>Title</p>
+<input type="text" id="title" value="Title" placeholder="">
+<p>Body</p>
+<textarea name="" id="body"></textarea><br>
+<input type="button" value="Add Post" id="btn-add">
+<ul>
+<% @post.each do |a| %>  
+  <li>
+  id: <span class ="id"><%= a.id %></span>;
+    title: <%= a.title %>;
+    body: <%= a.body %>;
+  </li>  
+<% end %>
+</ul>
+<!-- Script -->
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Click button refresh
+
+    $("#btn-add").click(function(event) {
+      var url = window.location.href,
+          data = {authenticity_token: '<%= form_authenticity_token %>', title: $("#title").val(),body: $("#body").val()}; 
+
+      $.ajax({        
+        type: 'post',
+        url: "/post/create",
+        data: data,
+        beforeSend: function(){ 
+          ajax_loading(); 
+        },
+        complete: function (){
+          $("ul").append("<li>id: "+(parseInt($("ul li:last-child").index()) + 1)+"; title: "+$("#title").val()+"; body: "+$("#title").val()+";</li>");
+          $(".ajax-loading").remove();
+        }
+      });
+    });    
+  });
+</script>
