@@ -8,9 +8,8 @@
 <ul>
 <% @post.each do |a| %>  
   <li>
-  id: <span class ="id"><%= a.id %></span>;
-    title: <%= a.title %>;
-    body: <%= a.body %>;
+    <span>Title:</span> <%= a.title %>;
+    <span>Body:</span> <%= a.body %>;
   </li>  
 <% end %>
 </ul>
@@ -18,22 +17,25 @@
 <script type="text/javascript">
   $(document).ready(function() {
     // Click button refresh
-
     $("#btn-add").click(function(event) {
       var url = window.location.href,
           data = {authenticity_token: '<%= form_authenticity_token %>', title: $("#title").val(),body: $("#body").val()}; 
-
-      $.ajax({        
+      $.ajax({
         type: 'post',
         url: "/post/create",
         data: data,
         beforeSend: function(){ 
           ajax_loading(); 
-        },
-        complete: function (){
-          $("ul").append("<li>id: "+(parseInt($("ul li:last-child").index()) + 1)+"; title: "+$("#title").val()+"; body: "+$("#title").val()+";</li>");
-          $(".ajax-loading").remove();
         }
+      })
+      .done(function() {
+        $("ul").append("<li style='color: red;' > Title: "+$("#title").val()+"; Body: "+$("#body").val()+";</li>");         
+      })
+      .fail(function() {
+        alert("error");
+      })
+      .always(function() {
+        $(".ajax-loading").remove();
       });
     });    
   });

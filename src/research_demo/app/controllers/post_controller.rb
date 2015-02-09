@@ -4,7 +4,7 @@ class PostController < ApplicationController
   end
 
   def create
-    title = params[:title].nil? ? '':params[:tile]
+    title = params[:title].nil? ? '':params[:title]
     body =params[:body].nil? ? '':params[:body]
     result = Post.addnew(title, body)
     render :json => result
