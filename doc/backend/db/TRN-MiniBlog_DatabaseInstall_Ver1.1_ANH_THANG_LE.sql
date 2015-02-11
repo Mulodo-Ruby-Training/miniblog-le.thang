@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2015 at 03:59 AM
+-- Generation Time: Feb 11, 2015 at 04:10 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `category` (
 `id` int(3) NOT NULL,
   `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `id_parent` int(3) DEFAULT NULL,
+  `parent_id` int(3) DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `create_at` datetime NOT NULL,
   `update_at` datetime NOT NULL
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS `category` (
 CREATE TABLE IF NOT EXISTS `comment` (
 `id` int(11) NOT NULL,
   `content` tinytext COLLATE utf8_unicode_ci NOT NULL,
-  `id_user` int(8) NOT NULL,
-  `id_post` int(8) NOT NULL,
+  `user_id` int(8) NOT NULL,
+  `post_id` int(8) NOT NULL,
   `parent_id` int(11) NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `post` (
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `image` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `id_author` int(8) NOT NULL,
+  `user_id` int(8) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -77,8 +77,8 @@ CREATE TABLE IF NOT EXISTS `post` (
 --
 
 CREATE TABLE IF NOT EXISTS `post_to_catelogry` (
-  `id_category` int(3) NOT NULL,
-  `id_post` int(8) NOT NULL
+  `category_id` int(3) NOT NULL,
+  `post_id` int(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
