@@ -1,0 +1,25 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.ajax({
+            url: '/users/create_user',
+            type: 'POST',
+            data: {"utf8":"✓",
+                "authenticity_token":"YX0+4AeWlGWJiQZgbhV9cxi6TUCoibZfwh95BrK9iCQ=",
+                "user" : {"name":"asasa",
+                    "email":"asasas@asas.com",
+                    "password":"[FILTERED]",
+                    "confirm_password":"[FILTERED]"
+                },"commit":"Register"},
+        })
+                .done(function(data) {
+                    alert(data);
+                })
+                .fail(function() {
+                    console.log("error");
+                })
+                .always(function() {
+                    console.log("complete");
+                });
+
+    });
+</script>
