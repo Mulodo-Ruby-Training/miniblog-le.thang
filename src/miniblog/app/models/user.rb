@@ -88,12 +88,13 @@ class User < ActiveRecord::Base
   #
   def self.get_user_info(user_id)
     begin
-      select(
+      user = User.select(
           :username, :first_name, :last_name, :display_name, :birthday, :permission,
           :avatar, :gender, :email, :address, :status, :created_at, :updated_at
-      ).find(user_id)
+      ).where(id: user_id)
+      result_info(I18n.t('error.success_code'),user)
     rescue => e
-      nil
+      result_info(I18n.t('error.get_user_info_failed'),nil, e)
     end
   end
 
@@ -120,6 +121,19 @@ class User < ActiveRecord::Base
       result_info(I18n.t('error.success_code'),user_params,"Change password successfully.")
     else
       result_info(I18n.t('error.change_password_failed'),user_params)
+    end
+  end
+
+  #
+  # GET apis/get_list_user
+  def self.get_list_user (limit = 0, offset = 0)
+    begin
+      user = User.select(:id, :username, :first_name, :last_name, :avatar, :gender,
+                  :mail, :display_name, :address, :created_at, :updated_at
+      ).limit(0).offset(0)
+      result_info(I18n.t('error.success_code'),user.to_s,"Get list user successfully.")
+    rescue
+      result_info(I18n.t('error.get_list_user'),nil)
     end
   end
 

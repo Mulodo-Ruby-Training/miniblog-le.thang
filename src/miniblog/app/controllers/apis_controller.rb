@@ -46,15 +46,12 @@ class ApisController < ApplicationController
   # Task https://my.redmine.jp/mulodo/issues/21945
   # GET apis/user_info/:id
   def user_info
-    # Check object nil
-    user_info = User.get_user_info(params[:id])
-    if user_info.nil?
-      render json: result_info(t('error.token_expired'))
-    else
+    render json: User.get_user_info(params[:id])
+  end
 
-      render json: result_info(t('error.get_user_info_failed'),user_info)
-    end
-
+  # GET apis/user_info/:id
+  def get_list_user
+    render :json => User.get_list_user(params[:limit],params[:offset])
   end
 
   # Task https://my.redmine.jp/mulodo/issues/21943

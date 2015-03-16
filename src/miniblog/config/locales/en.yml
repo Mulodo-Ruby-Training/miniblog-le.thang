@@ -26,6 +26,6 @@ en:
     update_user:  [2005,'Update users failed.']
     change_password_failed: [2006,'Change password failed.']
     login_failed: [2007,'Could not login.']
-    get_info_post_of_user: [2008,'Get information all post of the users.']
+    get_list_user: [2008,'Get information all post of the users.']
     change_permission:  [2009,'Could not change permission.']
     search_failed:  [2010,'Search failed.']

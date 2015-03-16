@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   post 'apis/user_login'
   get 'apis/search_user_by_name/:keyword(/:limit/:offset)' => 'apis#search_user_by_name'
   get 'apis/user_info/:id' => 'apis#user_info'
-  match 'apis/:id/change_password' => 'apis#change_password', via:[:put,:patch]
+  get 'apis/get_list_user' => 'apis#get_list_user'
+  match 'apis/:id/change_password(/:limit/:offset)' => 'apis#change_password', via:[:put,:patch]
   match 'apis/:id/update_user_info' => 'apis#update_user_info', via:[:put, :patch]
 
 

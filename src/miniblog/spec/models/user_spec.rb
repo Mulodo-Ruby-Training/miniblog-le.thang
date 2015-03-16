@@ -56,11 +56,18 @@ RSpec.describe User, type: :model do
   describe ".get_user_info" do
     let(:new_user){User.create_user(build(:user))}
     let(:user_id){User.first.id}
-    context 'Get user info' do
-      it 'should request the user id exists.' do
-        user = User.get_user_info(user_id)
-        expect(user).to_not eq nil
-      end
+    it 'get user info  successful.' do
+      user = User.get_user_info(user_id)
+      expect(user[:meta][:code]).to eq 200
+    end
+  end
+
+  # Test get list user info
+  describe ".get_list_user" do
+    let(:new_user){User.create_user(build(:user))}
+    it 'get list user success.' do
+      user = User.get_list_user(1,0)
+      expect(user[:meta][:code]).to eq 200
     end
   end
 
