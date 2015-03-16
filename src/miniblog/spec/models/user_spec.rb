@@ -1,5 +1,5 @@
+require 'spec_helper'
 require 'rails_helper'
-
 RSpec.describe User, type: :model do
   it "has a valid factory" do
     expect(build(:user)).to be_valid
@@ -9,7 +9,8 @@ RSpec.describe User, type: :model do
   describe ".create_user" do
     let(:leanhthang){build(:user)}
     it "should create a new instance given a valid attribute" do
-      User.create_user(leanhthang)
+      result = User.create_user(leanhthang)
+      expect(result[:meta][:code]).to eq 200
     end
   end
   # Test model login
@@ -43,8 +44,8 @@ RSpec.describe User, type: :model do
         expect(change_pass[:meta][:code]).to eq 2006
       end
     end
-    context 'If change password to successful.' do
-      it 'Response successful' do
+    context 'change password to successful.' do
+      it 'responds with status: 200' do
         change_pass = User.change_password(user_id,params)
         expect(change_pass[:meta][:code]).to eq 200
       end
@@ -93,14 +94,14 @@ RSpec.describe User, type: :model do
     let(:params) {{keyword:'leanh', limit: 2, offset: 2 }}
     context 'successful.' do
       it "search successful." do
-        user =  User.search_user_by_name("leanhthang",1,2)
+        user =  User.search_user_by_name("leanhthang",1,0)
         expect(user[:meta][:code]).to eq 200
       end
     end
     context 'search false.' do
       it "should be sending keyword." do
         user =  User.search_user_by_name(nil,1,2)
-        expect(user[:meta][:code]).to eq 1000
+        expect(user[:meta][:code]).to eq 2010
       end
     end
   end

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # ================ User Routes ================= #
   #
   get 'apis/user_logout'
-  post 'apis/create_user'
+  post 'apis/create_user' => 'apis#create_user'
   post 'apis/user_login'
   get 'apis/search_user_by_name/:keyword(/:limit/:offset)' => 'apis#search_user_by_name'
   get 'apis/user_info/:id' => 'apis#user_info'

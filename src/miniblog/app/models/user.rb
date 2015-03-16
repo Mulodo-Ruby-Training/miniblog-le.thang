@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  extend ApplicationHelper
   has_many :posts, class_name: 'Post', foreign_key: 'id'
   has_many :comments, class_name: 'Comment', foreign_key: 'id'
 
@@ -56,15 +57,12 @@ class User < ActiveRecord::Base
     begin
       user = new(params)
       user.save!
-      return {meta:{code: STATUS_OK, description:"Account is created successfully",
-              messages:"Successful"},data: params}
+      result_info(I18n.t('error.success_code'),params,"Account is created successfully")
     rescue => e
       if user.invalid?
-        return {meta:{code: ERROR_VALIDATE[0], description:ERROR_VALIDATE[1],
-                messages:user.errors},data:nil}
+        result_info(I18n.t('error.validation'),user.errors)
       else
-        return {meta:{code: ERROR_INSERT_USER[0], description:ERROR_INSERT_USER[1],
-                messages: e.to_s},data:nil}
+        result_info(I18n.t 'error.create_user',nil)
       end
     end
   end
@@ -74,18 +72,14 @@ class User < ActiveRecord::Base
   def self.user_login(user_params)
     # Check object nil
     if user_params[:username].blank? || user_params[:password].blank?
-      return {meta:{code: ERROR_USERNAME_OR_PASSWORD_FAILED[0], description:ERROR_USERNAME_OR_PASSWORD_FAILED[1],
-              messages: 'Invalid params'},data:nil}
+      result_info(I18n.t 'error.username_or_password_failed',nil)
     else
       # Check username & password
       user = authenticate(user_params[:username], user_params[:password])
       if user.blank?
-        return {meta:{code: ERROR_LOGIN_FAILED[0], description:ERROR_LOGIN_FAILED[1],
-                messages:"Login failed."},data: user_params}
+        result_info(I18n.t 'error.login_failed',user_params)
       else
-        # return value
-        return {meta:{code: STATUS_OK, description:"Account login successfully",
-                messages:"Successful"},data: User.select(:token, :id, :permission).find(user.id)}
+        result_info(I18n.t('error.success_code'),User.select(:token, :id, :permission).find(user.id),"Account login successfully")
       end
     end
   end
@@ -108,11 +102,9 @@ class User < ActiveRecord::Base
   def self.update_user(user_id,user_params)
     begin
       user = update(user_id,user_params)
-      return {meta:{code: STATUS_OK, description:"Update user info successfully",
-                    messages:"Successful"},data: user_params}
+      result_info(I18n.t('error.success_code'),user_params,"Update user info successfully")
     rescue => e
-      return {meta:{code: ERROR_UPDATE_USER[0], description:ERROR_UPDATE_USER[1],
-                    messages:"Update user failed:#{e.to_s}"},data:nil}
+      result_info(I18n.t('error.update_user'),nil,"Update user failed:#{e.to_s}")
     end
   end
 
@@ -125,46 +117,42 @@ class User < ActiveRecord::Base
       salt = BCrypt::Engine.generate_salt
       pass = BCrypt::Engine.hash_secret(user_params[:password_new], salt)
       where(:id => user_id).update_all(password: pass, password_salt: salt)
-      return {meta:{code: STATUS_OK, description:"Change password successfully",
-                    messages:"Successful"},data: user_params}
+      result_info(I18n.t('error.success_code'),user_params,"Change password successfully.")
     else
-      return {meta:{code: ERROR_CHANGED_PASSWORD[0], description:ERROR_CHANGED_PASSWORD[1],
-                    messages:"Password compare with database not match."},data: user_params}
+      result_info(I18n.t('error.change_password_failed'),user_params)
     end
   end
 
   # Task https://my.redmine.jp/mulodo/issues/21947
   # GET apis/search_user_by_name/:keyword(/:limit/:offset
   def self.search_user_by_name(keyword, limit, offset)
-    if keyword.present?
-      users = User.search(keyword)
+    begin
+      users = search(keyword).limit(limit).offset(offset)
       data = []
       for user in users
         temp_data = {id: user.id, username: user.username, first_name: user.first_name,
                      last_name: user.last_name, avatar: user.avatar}
         data << temp_data
       end
-      return{meta:{code:STATUS_OK,description:"Get user info successfully",
-                     messages:"Successful"},data:data}
-    else
-      return{meta:{code:ERROR_VALIDATE[0],description:ERROR_VALIDATE[1],
-                     messages:"Keyword is blank"},data:nil}
+      result_info(I18n.t('error.success_code'),data,"search successfully.")
+    rescue => e
+      result_info(I18n.t('error.search_failed'))
     end
   end
 
   private
-    def create_token
-      self.token = SecureRandom.urlsafe_base64 if token.nil?
+  def create_token
+    self.token = SecureRandom.urlsafe_base64 if token.nil?
+  end
+  # Check login
+  # Return: user object or nil
+  def self.authenticate(username, password)
+    user = where(username: username).first
+    # Encrypt password to compare
+    if user && user.password == BCrypt::Engine.hash_secret(password, user.password_salt)
+      user
+    else
+      nil
     end
-    # Check login
-    # Return: user object or nil
-    def self.authenticate(username, password)
-      user = where(username: username).first
-      # Encrypt password to compare
-      if user && user.password == BCrypt::Engine.hash_secret(password, user.password_salt)
-        user
-      else
-        nil
-      end
-    end
+  end
 end

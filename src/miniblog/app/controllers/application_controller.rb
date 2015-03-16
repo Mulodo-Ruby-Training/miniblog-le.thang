@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
 
   include UsersHelper
+  include ApplicationHelper
   # Check users login
 
 end
