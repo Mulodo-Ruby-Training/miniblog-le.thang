@@ -15,9 +15,10 @@ Rails.application.routes.draw do
   post 'apis/create_post'
   delete 'apis/delete_post/:id' => 'apis#delete_post'
   get 'apis/get_list_post(/:limit/:offset)' => 'apis#get_list_post'
-  get 'apis/get_post_of_user(/:limit/:offset)' => 'apis#get_post_of_user'
-  match 'apis/:id/update_post' => 'apis#update_post', via:[:put,:patch]
-  match 'apis/:id/active_post' => 'apis#active_post', via:[:put,:patch]
+  get 'apis/get_a_post/:post_id' => 'apis#get_a_post'
+  get 'apis/get_all_post_for_user/:user_id(/:limit/:offset)' => 'apis#get_all_post_for_user'
+  match 'apis/:post_id/update_post' => 'apis#update_post', via:[:put,:patch]
+  match 'apis/:post_id/active_post' => 'apis#active_post', via:[:put,:patch]
 
   # ================  Resource   ================= #
   # User controller
@@ -27,7 +28,6 @@ Rails.application.routes.draw do
   get 'users/update'
   get 'users/change_permission'
   # Post
-  get 'posts/index'
   get 'posts/new'
   get 'posts/update'
   get 'posts/delete'

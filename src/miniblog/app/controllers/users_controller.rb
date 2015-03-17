@@ -9,8 +9,8 @@ class UsersController < ApisController
   #
   #
   def create
-    @user = User.create_user(user_params)
-    render :json => @user
+    create_user
+    # render :json => @user
   end
 
   # Model User.logout
@@ -24,7 +24,7 @@ class UsersController < ApisController
   #
   # User login
   def login
-    # user_login
+    user_login
   end
   #
   #

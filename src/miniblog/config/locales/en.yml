@@ -34,3 +34,4 @@ en:
     post_active_failed: "2505,Could not active this post."
     post_get_list_failed: "2506,Could not get list post."
     post_get_a_post_failed: "2507,Could not get this post."
+    get_all_post_for_user: "2508,Could not get this post."

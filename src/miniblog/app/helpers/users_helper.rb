@@ -8,7 +8,7 @@ module UsersHelper
   end
   # Check user login
   def check_login?
-    token = session[:user_id].nil? ? nil : User.get_token(session[:user_id])
+    token = session[:user_id].nil? ? nil : User.find(session[:user_id])[:token]
     if token && token == session[:token]
       true
     else
