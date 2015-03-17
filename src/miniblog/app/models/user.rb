@@ -12,11 +12,11 @@ class User < ActiveRecord::Base
 
   # ========= Validation =========== #
   validates :password, confirmation: true
-  validates :email, presence: true, uniqueness: true, length: 8..50, format: { with: /\A[a-z0-9\.]+@([a-z]{1,10}\.){1,2}[a-z]{2,4}\z/,message: "Invalid Email"}
+  validates :email, presence: true, uniqueness: true, length: 8..50, format: { with: /\A[a-z0-9\.]+@([a-z]{1,10}\.){1,2}[a-z]{2,4}\z/i,message: "Invalid Email"}
   validates :username, presence: true, uniqueness: true, length: 6..40
   validates :first_name, presence: true, length: 2..50
   validates :last_name, presence: true, length: 2..50
-  validates :avatar, format: {with: /\A*\.(JPEG|JPG|PNG|GIF|BMP|ICO)\z/i, message: "Your images incorrect formated, it must be formatted as: jpeg, png, gif, bmp, icon "}
+  validates :avatar, format: {with: /\A*\.(JPEG|JPG|PNG|GIF|BMP|ICO)\z/i, message: I18n.t('error.validate_image')}
   validates :display_name, uniqueness: true, length: 3..50
   validates :birthday, format: {with: /\A[\d\/-]{10}\z/}
   validates :status, numericality: true, length: {is: 1}, on: :update
@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
           :username, :first_name, :last_name, :display_name, :birthday, :permission,
           :avatar, :gender, :email, :address, :status, :created_at, :updated_at
       ).where(id: user_id)
-      result_info(I18n.t('error.success_code'),user)
+      result_info(I18n.t('error.success_code'),user,"Get successful user's info.")
     rescue => e
       result_info(I18n.t('error.get_user_info_failed'),nil, e)
     end

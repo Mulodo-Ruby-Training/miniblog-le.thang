@@ -1,31 +1,36 @@
 en:
-  object:
-    user: 'User'
-  method:
-    create_user: 'create'
   error:
     # ============= System error ============= #
     success_code: 200
-    validation: [1000,'Validate data error']
-    system: [9001, 'System error was occurred. Please try again later.']
-    database: [9002,"Database error was occurred. Please try again later."]
-    object_trouble: [9004,"The object have trouble or null can't access."]
-    time_limit: [9005,"Time limit Exceeded. Refine your search to locate more entries."]
+    validation: "1000,Validate data error"
+    validate_image: "Your images incorrect formated, it must be formatted as: jpeg, png, gif, bmp, icon."
+    system: "9001, System error was occurred. Please try again later."
+    database: "9002,Database error was occurred. Please try again later."
+    object_trouble: "9004,The object have trouble or null can nott access."
+    time_limit: "9005,Time limit Exceeded. Refine your search to locate more entries."
     # ============= Authentication error ============= #
-    not_yet_login: [1001,'Check login false, you are already logged in?']
-    token_expired: [1002,'Token has expired']
-    failed_link: [1003,"This link is generated when most errors occur. The link will send the users to the original Login URL page. "]
-    session_expired:  [1004,"Session is expired"]
-    username_or_password_failed: [1005,"The password or username entered is invalid."]
-    permission_not_enough: [1006,"Your permission isn't enough"]
-    alredy_logged_in: [1007,"Account already exists. Do you want to log out."]
+    not_yet_login: "1001,Check login false, you are already logged in?"
+    token_expired: "1002,Token has expired"
+    failed_link: "1003,This link is generated when most errors occur. The link will send the users to the original Login URL page. "
+    session_expired: " 1004,Session is expired"
+    username_or_password_failed: "1005,The password or username entered is invalid."
+    permission_not_enough: "1006,Your permission is not enough"
+    alredy_logged_in: "1007,Account already exists. Do you want to log out."
     # ============= User Error Message ============= #
-    user_existed: [2001,'This username is already in used.']
-    create_user: [2002,'Create users failed.']
-    get_user_info_failed: [2003,'Get information of all users failed.']
-    update_user:  [2005,'Update users failed.']
-    change_password_failed: [2006,'Change password failed.']
-    login_failed: [2007,'Could not login.']
-    get_list_user: [2008,'Get information all post of the users.']
-    change_permission:  [2009,'Could not change permission.']
-    search_failed:  [2010,'Search failed.']
+    user_existed: "2001,This username is already in used."
+    create_user: "2002,Create users failed."
+    get_user_info_failed: "2003,Get information of all users failed."
+    update_user: " 2005,Update users failed."
+    change_password_failed: "2006,Change password failed."
+    login_failed: "2007,Could not login."
+    get_list_user: "2008,Get information all post of the users."
+    change_permission: " 2009,Could not change permission."
+    search_failed: " 2010,Search failed."
+    # ============= Post Error Message ============= #
+    post_create_failed: "2501,Could not create new post."
+    post_update_failed: "2502,Could not update this post."
+    post_delete_failed: "2503,Could not delete this post."
+    post_search_failed: "2504,Could not search the post with this keyword."
+    post_active_failed: "2505,Could not active this post."
+    post_get_list_failed: "2506,Could not get list post."
+    post_get_a_post_failed: "2507,Could not get this post."

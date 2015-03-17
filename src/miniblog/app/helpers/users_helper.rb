@@ -10,9 +10,9 @@ module UsersHelper
   def check_login?
     token = session[:user_id].nil? ? nil : User.get_token(session[:user_id])
     if token && token == session[:token]
-      return true
+      true
     else
-      return false
+      false
     end
   end
   # Set permission
