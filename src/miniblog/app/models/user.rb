@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   # has_secure_password
 
   accepts_nested_attributes_for :comments
-  # attr_accessor :password_digest
+  attr_accessor :password_new
 
   # filter_parameter_logging :password, :password_confirmation
 
