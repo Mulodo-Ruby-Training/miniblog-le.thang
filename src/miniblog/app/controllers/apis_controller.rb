@@ -1,4 +1,5 @@
 class ApisController < ApplicationController
+  skip_before_filter :verify_authenticity_token
   # ================    APIs     ================= #
   # ================    User     ================= #
   # https://my.redmine.jp/mulodo/issues/21936
@@ -7,8 +8,8 @@ class ApisController < ApplicationController
   def create_user
     pass = user_params[:password]
     confirm = user_params[:password_confirmation]
-    if check_login?.blank? && pass.present? && confirm.present? && (pass.eql? confirm)
-      render_need_login(User.create_user(user_params))
+    if pass.present? && confirm.present? && (pass.eql? confirm)
+      render json: User.create_user(user_params)
     else
       render json: result_info(t('error.validation'),nil,'Confirm password and password not match.')
     end
@@ -111,8 +112,6 @@ class ApisController < ApplicationController
   # ================    APIs     ================= #
   # ================   Comment   ================= #
   # Strong params
-
-
   private
   def user_params
     params.fetch(:user,{}).permit(
