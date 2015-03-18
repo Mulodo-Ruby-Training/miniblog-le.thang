@@ -102,7 +102,19 @@ class User < ActiveRecord::Base
   # PUT/PATCH apis/:id/update_user_info
   def self.update_user(user_params)
     begin
-      user = update(user_params[:user_id],user_params)
+      params = {
+          email: user_params[:email],
+          first_name: user_params[:first_name],
+          last_name: user_params[:last_name],
+          avatar: user_params[:avatar],
+          gender: user_params[:gender],
+          display_name: user_params[:display_name],
+          birthday: user_params[:birthday],
+          address: user_params[:address],
+          permission: user_params[:permission],
+          status: user_params[:status]
+      }
+      user = where(id: user_params[:user_id]).update_all(params)
       result_info(I18n.t('error.success_code'),user_params,"Update user info successfully")
     rescue => e
       result_info(I18n.t('error.update_user'),user_params,"Update user failed:#{e.to_s}")

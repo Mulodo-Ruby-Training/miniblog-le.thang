@@ -64,11 +64,12 @@ class ApisController < ApplicationController
   # PUT/PATCH apis/:user_id/change_password
   def change_password
     pass = user_params[:password]
+    pass_new = user_params[:password_new]
     confirm = user_params[:password_confirmation]
-    if pass.present? && confirm.present? && (pass.eql? confirm)
+    if pass!=pass_new && pass_new.present? && confirm.present? && (pass_new.eql? confirm)
       render_need_login(User.change_password(params[:user_id],user_params))
     else
-      render json: result_info(t('error.validation'),'pass' ,'Confirm password and password not match.')
+      render json: result_info(t('error.validation'),'pass' ,'The new password must different old password or confirm password and password not match.')
     end
   end
 
