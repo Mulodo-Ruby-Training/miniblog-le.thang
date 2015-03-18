@@ -1,10 +1,15 @@
 module UsersHelper
+  # Get current user
   def current_user
     unless session[:user_id].blank?
       @current_user = User.find(session[:user_id])
     else
       nil
     end
+  end
+  # Check current user
+  def current_user?(user_id)
+    session[:user_id] == user_id ? true : false
   end
   # Check user login
   def check_login?
@@ -45,8 +50,4 @@ module UsersHelper
     User.where(:id => user_id).update_all(:token => token)
     session[:token] = token
   end
-
-  # def check_token?
-  #   session[:token].blank? ? redirect_to root_path : nil
-  # end
 end

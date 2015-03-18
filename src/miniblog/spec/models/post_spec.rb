@@ -71,7 +71,18 @@ RSpec.describe Post, type: :model do
   end
   # Test Delete Post
   describe "#Delete post" do
-    
+    let(:post_params) {FactoryGirl.attributes_for(:post)}
+    let(:post_create) {Post.create_post(1,post_params)}
+    it "Delete successful." do
+      post_create
+      post_delete = Post.delete_post(Post.first[:id])
+      expect(post_delete[:meta][:code]).to eq 200
+    end
+    it "Delete failed." do
+      post_create
+      post_delete = Post.delete_post('s')
+      expect(post_delete[:meta][:code]).to eq 2503
+    end
   end
   # Test active post
   describe "#Active Post" do

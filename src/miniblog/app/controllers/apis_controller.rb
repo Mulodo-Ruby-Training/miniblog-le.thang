@@ -91,7 +91,7 @@ class ApisController < ApplicationController
   # Task https://my.redmine.jp/mulodo/issues/21957
   # GET apis/delete_post
   def delete_post
-
+    render_need_login(Post.delete_post(params[:post_id]))
   end
   # Task https://my.redmine.jp/mulodo/issues/21953
   # PUT apis/active_post/
@@ -111,6 +111,8 @@ class ApisController < ApplicationController
   # ================    APIs     ================= #
   # ================   Comment   ================= #
   # Strong params
+
+
   private
   def user_params
     params.fetch(:user,{}).permit(

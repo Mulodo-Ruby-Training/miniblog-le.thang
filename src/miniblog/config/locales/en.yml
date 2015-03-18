@@ -29,7 +29,7 @@ en:
     # ============= Post Error Message ============= #
     post_create_failed: "2501,Could not create new post."
     post_update_failed: "2502,Could not update this post."
-    post_delete_failed: "2503,Could not delete this post."
+    post_delete_failed: "2503,Could not delete this post. Please reviewed your record, it could not exist."
     post_search_failed: "2504,Could not search the post with this keyword."
     post_active_failed: "2505,Could not active this post."
     post_get_list_failed: "2506,Could not get list post."

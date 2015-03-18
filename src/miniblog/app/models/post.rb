@@ -6,9 +6,9 @@ class Post < ActiveRecord::Base
 
   accepts_nested_attributes_for :comments
 
-  validates_presence_of :title, uniq: false, :message => "asdasd"
-  validates_presence_of :description, uniq: false, :message => "asdasd"
-  validates_presence_of :content, uniq: false, :message => "asdasd"
+  validates :title, presence: true, length: {minimum: 10}
+  validates :description, presence: true, length: {minimum: 10}
+  validates :content, presence: true, length: {minimum: 20}
   validates :thumbnail, format: {with: /\A*\.(JPEG|JPG|PNG|GIF|BMP|ICO)\z/i,:message => I18n.t('error.validate_image')}
 
   # Task https://my.redmine.jp/mulodo/issues/21951
@@ -75,7 +75,7 @@ class Post < ActiveRecord::Base
   def self.get_all_post_for_user(user_id, limit = 0, offset = 0)
     begin
       post = where(:user_id => user_id).limit(limit).offset(offset)
-      result_info(I18n.t('error.success_code'),post, 'Update new post successful.')
+      result_info(I18n.t('error.success_code'),post, 'Updated new post successful.')
     rescue
       result_info(I18n.t('error.get_all_post_for_user'),post_params)
     end
@@ -87,9 +87,18 @@ class Post < ActiveRecord::Base
       current_active = Post.find(post_id)[:status].blank? ?  0:1
       active = current_active.blank? ? 1:0
       where(:status => current_active).update_all(:status => active)
-      result_info(I18n.t('error.success_code'),Post.find(post_id), 'Change active new post successful.')
+      result_info(I18n.t('error.success_code'),Post.find(post_id), 'Changed active new post successful.')
     rescue
       result_info(I18n.t('error.post_active_failed'),post_params)
+    end
+  end
+
+  def self.delete_post(post_id)
+    begin
+      Post.find(post_id).destroy
+      result_info(I18n.t('error.success_code'),nil, 'Deleted post successful.')
+    rescue
+      result_info(I18n.t('error.post_delete_failed'),nil, 'Deleted post successful.')
     end
   end
 end
