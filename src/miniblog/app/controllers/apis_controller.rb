@@ -11,7 +11,7 @@ class ApisController < ApplicationController
     if pass.present? && confirm.present? && (pass.eql? confirm)
       render :json => User.create_user(user_params)
     else
-      render json: result_info(t('error.validation'),nil ,'Confirm password and password not match.')
+      render json: result_info(t('error.validation'),'pass' ,'Confirm password and password not match.')
     end
   end
 
@@ -19,7 +19,7 @@ class ApisController < ApplicationController
   # POST apis/user_login
   def user_login
     unless check_login?
-      user = User.user_login(user_params)
+      user = User.user_login(params[:username],params[:password])
       # store session
       if user[:meta][:code] == 200
         session[:user_id] = user[:data][:id]
@@ -46,7 +46,7 @@ class ApisController < ApplicationController
   # Task https://my.redmine.jp/mulodo/issues/21945
   # GET apis/user_info/:id
   def user_info
-    render :json =>  User.get_user_info(params[:id])
+    render :json =>  User.get_user_info(params[:user_id])
   end
 
   # GET apis/user_info/:id
@@ -57,13 +57,19 @@ class ApisController < ApplicationController
   # Task https://my.redmine.jp/mulodo/issues/21943
   # PUT/PATCH apis/:user_id/update_user_info
   def update_user_info
-    render_need_login(User.update_user(params[:id],user_params))
+    render_need_login(User.update_user(user_params))
   end
 
   # Task https://my.redmine.jp/mulodo/issues/21947
   # PUT/PATCH apis/:user_id/change_password
   def change_password
-    render_need_login(User.change_password(id,user_params))
+    pass = user_params[:password]
+    confirm = user_params[:password_confirmation]
+    if pass.present? && confirm.present? && (pass.eql? confirm)
+      render_need_login(User.change_password(params[:user_id],user_params))
+    else
+      render json: result_info(t('error.validation'),'pass' ,'Confirm password and password not match.')
+    end
   end
 
   # Task https://my.redmine.jp/mulodo/issues/21948
@@ -118,7 +124,7 @@ class ApisController < ApplicationController
         :password, :password_confirmation, :password_new,
         :username, :first_name, :last_name, :avatar,:address,
         :gender, :permission, :email, :display_name, :birthday,
-        :token, :status
+        :token, :status, :user_id
     )
   end
   def post_params

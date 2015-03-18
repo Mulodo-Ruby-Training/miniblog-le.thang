@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   # has_secure_password
 
   accepts_nested_attributes_for :comments
-  attr_accessor :password_new
+  attr_accessor :password_new, :user_id
 
   # filter_parameter_logging :password, :password_confirmation
 
@@ -69,15 +69,15 @@ class User < ActiveRecord::Base
 
   # https://my.redmine.jp/mulodo/issues/21938
   # User login
-  def self.user_login(user_params)
+  def self.user_login(username, password)
     # Check object nil
-    if user_params[:username].blank? || user_params[:password].blank?
-      result_info(I18n.t 'error.username_or_password_failed',nil)
+    if username.blank? || password.blank?
+      result_info(I18n.t 'error.username_or_password_failed')
     else
       # Check username & password
-      user = authenticate(user_params[:username], user_params[:password])
-      if user.blank?
-        result_info(I18n.t 'error.login_failed',user_params)
+      user = authenticate(username, password)
+      if user.nil?
+        result_info(I18n.t 'error.login_failed',user)
       else
         result_info(I18n.t('error.success_code'),User.select(:token, :id, :permission).find(user.id),"Account login successfully")
       end
@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
     begin
       user = User.select(
           :username, :first_name, :last_name, :display_name, :birthday, :permission,
-          :avatar, :gender, :email, :address, :status, :created_at, :updated_at
+          :avatar, :gender, :email, :address, :status, :created_at, :updated_at, :id
       ).where(id: user_id)
       result_info(I18n.t('error.success_code'),user,"Get successful user's info.")
     rescue => e
@@ -100,12 +100,12 @@ class User < ActiveRecord::Base
 
   # Task https://my.redmine.jp/mulodo/issues/21943
   # PUT/PATCH apis/:id/update_user_info
-  def self.update_user(user_id,user_params)
+  def self.update_user(user_params)
     begin
-      user = update(user_id,user_params)
+      user = update(user_params[:user_id],user_params)
       result_info(I18n.t('error.success_code'),user_params,"Update user info successfully")
     rescue => e
-      result_info(I18n.t('error.update_user'),nil,"Update user failed:#{e.to_s}")
+      result_info(I18n.t('error.update_user'),user_params,"Update user failed:#{e.to_s}")
     end
   end
 
@@ -128,12 +128,12 @@ class User < ActiveRecord::Base
   # GET apis/get_list_user
   def self.get_list_user (limit = 0, offset = 0)
     begin
-      user = User.select(:id, :username, :first_name, :last_name, :avatar, :gender,
-                  :mail, :display_name, :address, :created_at, :updated_at
-      ).limit(0).offset(0)
-      result_info(I18n.t('error.success_code'),user.to_s,"Get list user successfully.")
-    rescue
-      result_info(I18n.t('error.get_list_user'),nil)
+      user = select(:id, :username, :first_name, :last_name, :avatar, :gender,
+                  :email, :display_name, :address, :created_at, :updated_at
+      ).limit(limit).offset(offset)
+      result_info(I18n.t('error.success_code'),user.to_json.to_s,"Get list user successfully.")
+    rescue => e
+      result_info(I18n.t('error.get_list_user'),e.to_s)
     end
   end
 
