@@ -23,21 +23,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
---
-
-CREATE TABLE IF NOT EXISTS `category` (
-`id` int(3) NOT NULL,
-  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `parent_id` int(3) DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '0',
-  `create_at` datetime NOT NULL,
-  `update_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `comment`
 --
 
@@ -70,16 +55,6 @@ CREATE TABLE IF NOT EXISTS `post` (
   `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `post_to_catelogry`
---
-
-CREATE TABLE IF NOT EXISTS `post_to_catelogry` (
-  `category_id` int(3) NOT NULL,
-  `post_id` int(8) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -108,11 +83,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Indexes for dumped tables
 --
 
---
--- Indexes for table `category`
---
-ALTER TABLE `category`
- ADD PRIMARY KEY (`id`);
+
 
 --
 -- Indexes for table `comment`
@@ -136,11 +107,6 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for dumped tables
 --
 
---
--- AUTO_INCREMENT for table `category`
---
-ALTER TABLE `category`
-MODIFY `id` int(3) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `comment`
 --
