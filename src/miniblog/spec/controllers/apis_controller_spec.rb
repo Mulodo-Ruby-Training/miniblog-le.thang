@@ -48,9 +48,6 @@ RSpec.describe ApisController, type: :controller do
   end
 end
 
-
-
-
     # context "create new user account:" do
     #   it "Test create success response code 200" do
     #     # post :create_user, attributes
