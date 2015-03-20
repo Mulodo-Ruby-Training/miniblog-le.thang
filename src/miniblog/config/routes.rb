@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   put 'apis/:user_id/update_user_info' => 'apis#update_user_info'
   # ================ User Routes ================= #
   post 'apis/create_post'
-  delete 'apis/delete_post/:id' => 'apis#delete_post'
+  delete 'apis/delete_post/:post_id' => 'apis#delete_post'
   get 'apis/get_list_post(/:limit/:offset)' => 'apis#get_list_post'
   get 'apis/get_a_post/:post_id' => 'apis#get_a_post'
   get 'apis/get_all_post_for_user/:user_id(/:limit/:offset)' => 'apis#get_all_post_for_user'

@@ -141,7 +141,7 @@ class User < ActiveRecord::Base
   def self.get_list_user (limit = 0, offset = 0)
     begin
       user = select(:id, :username, :first_name, :last_name, :avatar, :gender,
-                  :email, :display_name, :address, :created_at, :updated_at
+                    :email, :display_name, :address, :created_at, :updated_at
       ).limit(limit).offset(offset)
       result_info(I18n.t('error.success_code'),user.to_json.to_s,"Get list user successfully.")
     rescue => e
@@ -150,7 +150,7 @@ class User < ActiveRecord::Base
   end
 
   # Task https://my.redmine.jp/mulodo/issues/21947
-  # GET apis/search_user_by_name/:keyword(/:limit/:offset
+  # GET apis/search_user_by_name/:keyword(/:limit/:offset)
   def self.search_user_by_name(keyword, limit, offset)
     begin
       users = search(keyword).limit(limit).offset(offset)
@@ -162,7 +162,7 @@ class User < ActiveRecord::Base
       end
       result_info(I18n.t('error.success_code'),data,"search successfully.")
     rescue => e
-      result_info(I18n.t('error.search_failed'))
+      result_info(I18n.t('error.search_failed'), e.to_s)
     end
   end
 

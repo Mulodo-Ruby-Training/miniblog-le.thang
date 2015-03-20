@@ -1,6 +1,6 @@
 class CreateUsers < ActiveRecord::Migration
   def change
-    create_table :users do |t|
+    create_table :users, options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci' do |t|
       t.string :username,     limit: 40,  null: false, unique: true
       t.string :password,     limit: 150, null: false
       t.string :password_salt, limit: 50,  null: false

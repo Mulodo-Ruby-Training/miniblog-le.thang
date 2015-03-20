@@ -1,7 +1,13 @@
 module UsersHelper
+  include ApplicationHelper
   def current_user
     unless session[:user_id].blank?
-      @current_user = User.find(session[:user_id])
+      begin
+        @current_user = User.find(session[:user_id])
+      rescue
+        clear_session
+        render :json =>   result_info(t('error.system'))
+      end
     else
       nil
     end
@@ -37,7 +43,6 @@ module UsersHelper
     session[:permission] = nil
     session[:token] = nil
     session[:level] = nil
-    @current_user = nil
   end
 
   def update_and_session_token(user_id)
