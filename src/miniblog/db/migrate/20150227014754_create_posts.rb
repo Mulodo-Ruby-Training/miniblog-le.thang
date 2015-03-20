@@ -1,6 +1,6 @@
 class CreatePosts < ActiveRecord::Migration
   def change
-    create_table :posts do |t|
+    create_table :posts, options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci'  do |t|
 
       t.string :title,        limit: 200, null: false, unique: true
       t.string :description,  limit:255,  null: false, unique: true

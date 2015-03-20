@@ -19,14 +19,14 @@ RSpec.describe User, type: :model do
     let(:new_user){User.create_user(build(:user))}
     context 'successfully' do
       it 'Username and password match' do
-        result = User.user_login(params)
+        result = User.user_login(params[:username], params[:password])
         expect(result[:meta][:code]).to eq 200
       end
     end
     context 'If user, password wrong.' do
       let(:params){{username: 'vovantan', password: '18121990'}}
       it 'username and password dose not match' do
-        result = User.user_login(params)
+        result = User.user_login(params[:username], params[:password])
         expect(result[:meta][:code]).to eq 2007
       end
     end
@@ -79,7 +79,7 @@ RSpec.describe User, type: :model do
       let(:params){{email: 'vo_tan@mulodo.com', username: 'vovantan'}}
       it "should be sending data input matching format model database." do
         # @user = 
-        @user = User.update_user(user_id,params)
+        @user = User.update_user(params)
         # User.User.update_user(user_id,params)(user_id,params)
         expect(@user[:meta][:code]).to eq 200
       end
@@ -87,7 +87,7 @@ RSpec.describe User, type: :model do
     context 'successful.' do
       let(:params){{email: 'vo.tan@mulodo.com'}}
       it "update was successful." do
-        @user = User.update_user(user_id,params)
+        @user = User.update_user(params)
         # User.User.update_user(user_id,params)
         # User.where(id: 1).update_all(email: 'lad.d@gas.com')
         expect(@user[:meta][:code]).to eq 200

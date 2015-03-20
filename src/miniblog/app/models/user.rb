@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   # has_secure_password
 
   accepts_nested_attributes_for :comments
-  # attr_accessor :password_digest
+  attr_accessor :password_new, :user_id
 
   # filter_parameter_logging :password, :password_confirmation
 
@@ -69,15 +69,15 @@ class User < ActiveRecord::Base
 
   # https://my.redmine.jp/mulodo/issues/21938
   # User login
-  def self.user_login(user_params)
+  def self.user_login(username, password)
     # Check object nil
-    if user_params[:username].blank? || user_params[:password].blank?
-      result_info(I18n.t 'error.username_or_password_failed',nil)
+    if username.blank? || password.blank?
+      result_info(I18n.t 'error.username_or_password_failed')
     else
       # Check username & password
-      user = authenticate(user_params[:username], user_params[:password])
-      if user.blank?
-        result_info(I18n.t 'error.login_failed',user_params)
+      user = authenticate(username, password)
+      if user.nil?
+        result_info(I18n.t 'error.login_failed',user)
       else
         result_info(I18n.t('error.success_code'),User.select(:token, :id, :permission).find(user.id),"Account login successfully")
       end
@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
     begin
       user = User.select(
           :username, :first_name, :last_name, :display_name, :birthday, :permission,
-          :avatar, :gender, :email, :address, :status, :created_at, :updated_at
+          :avatar, :gender, :email, :address, :status, :created_at, :updated_at, :id
       ).where(id: user_id)
       result_info(I18n.t('error.success_code'),user,"Get successful user's info.")
     rescue => e
@@ -100,12 +100,24 @@ class User < ActiveRecord::Base
 
   # Task https://my.redmine.jp/mulodo/issues/21943
   # PUT/PATCH apis/:id/update_user_info
-  def self.update_user(user_id,user_params)
+  def self.update_user(user_params)
     begin
-      user = update(user_id,user_params)
+      params = {
+          email: user_params[:email],
+          first_name: user_params[:first_name],
+          last_name: user_params[:last_name],
+          avatar: user_params[:avatar],
+          gender: user_params[:gender],
+          display_name: user_params[:display_name],
+          birthday: user_params[:birthday],
+          address: user_params[:address],
+          permission: user_params[:permission],
+          status: user_params[:status]
+      }
+      user = where(id: user_params[:user_id]).update_all(params)
       result_info(I18n.t('error.success_code'),user_params,"Update user info successfully")
     rescue => e
-      result_info(I18n.t('error.update_user'),nil,"Update user failed:#{e.to_s}")
+      result_info(I18n.t('error.update_user'),user_params,"Update user failed:#{e.to_s}")
     end
   end
 
@@ -128,17 +140,17 @@ class User < ActiveRecord::Base
   # GET apis/get_list_user
   def self.get_list_user (limit = 0, offset = 0)
     begin
-      user = User.select(:id, :username, :first_name, :last_name, :avatar, :gender,
-                  :mail, :display_name, :address, :created_at, :updated_at
-      ).limit(0).offset(0)
-      result_info(I18n.t('error.success_code'),user.to_s,"Get list user successfully.")
-    rescue
-      result_info(I18n.t('error.get_list_user'),nil)
+      user = select(:id, :username, :first_name, :last_name, :avatar, :gender,
+                    :email, :display_name, :address, :created_at, :updated_at
+      ).limit(limit).offset(offset)
+      result_info(I18n.t('error.success_code'),user.to_json.to_s,"Get list user successfully.")
+    rescue => e
+      result_info(I18n.t('error.get_list_user'),e.to_s)
     end
   end
 
   # Task https://my.redmine.jp/mulodo/issues/21947
-  # GET apis/search_user_by_name/:keyword(/:limit/:offset
+  # GET apis/search_user_by_name/:keyword(/:limit/:offset)
   def self.search_user_by_name(keyword, limit, offset)
     begin
       users = search(keyword).limit(limit).offset(offset)
@@ -150,7 +162,7 @@ class User < ActiveRecord::Base
       end
       result_info(I18n.t('error.success_code'),data,"search successfully.")
     rescue => e
-      result_info(I18n.t('error.search_failed'))
+      result_info(I18n.t('error.search_failed'), e.to_s)
     end
   end
 
