@@ -82,7 +82,7 @@ class ApisController < ApplicationController
   # Task https://my.redmine.jp/mulodo/issues/21951
   # POST apis/create_post
   def create_post
-    params[:user_id] = session[:user_id] if session[:user_id].present?
+    post_params[:user_id] = session[:user_id] if session[:user_id].present?
     render_need_login(Post.create_post(post_params))
     # render text: Post.create_post(post_params)
   end
