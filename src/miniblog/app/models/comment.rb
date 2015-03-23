@@ -5,7 +5,8 @@ class Comment < ActiveRecord::Base
 
   accepts_nested_attributes_for :post
 
-  validates :content, presence: true, uniqueness: true, length: {minimum: 15}
+  validates :content, presence: true, length: {minimum: 15}
+  validates_uniqueness_of :content, on: :create
 
   # https://my.redmine.jp/mulodo/issues/21964
   # Coding/実装 #21964: Add Comment
@@ -32,7 +33,9 @@ class Comment < ActiveRecord::Base
     begin
       err = err_user_and_record(comm_params[:user_id],comm_params[:comment_id])
       if err == true
-        update(comm_params[:comment_id].to_i, comm_params[:content])
+        comm = find(comm_params[:comment_id].to_i)
+        comm.content = comm_params[:content]
+        comm.save!
         result_info(I18n.t('error.success_code'),nil, 'Update comment successful.')
       else
         err
@@ -44,11 +47,11 @@ class Comment < ActiveRecord::Base
 
   # https://my.redmine.jp/mulodo/issues/21968
   # Coding/実装 #21968: Delete Comment
-  def self.delete_comment(comment_id)
+  def self.delete_comment(comm_params)
     begin
       err = err_user_and_record(comm_params[:user_id],comm_params[:comment_id])
       if err == true
-        find(comment_id).destroy
+        find(comm_params[:comment_id].to_i).destroy
         result_info(I18n.t('error.success_code'),nil, 'Delete comment successful.')
       else
         err
@@ -84,8 +87,8 @@ class Comment < ActiveRecord::Base
   def self.err_user_and_record(user_id, comment_id)
     if where(id: comment_id).blank?
       result_info(I18n.t('error.miss_record_trouble'))
-    elsif user_id != where(:id => comment_id).pluck(:user_id)[0]
-      result_info(I18n.t('error.permission_not_enough'))
+    elsif user_id.to_i != where(:id => comment_id).pluck(:user_id)[0]
+      result_info(I18n.t('error.permission_not_enough') )
     else
       true
     end

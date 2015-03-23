@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   match 'apis/:post_id/update_post' => 'apis#update_post', via:[:put,:patch]
   match 'apis/:post_id/active_post' => 'apis#active_post', via:[:put,:patch]
   # ================ User Routes ================= #
-  post 'apis/create_comment/' => 'apis#create_comment'
+  post 'apis/create_comment' => 'apis#create_comment'
   match 'apis/:comment_id/update_comment' => 'apis#update_comment', via:[:put,:patch]
   delete 'apis/:comment_id/delete_comment' => 'apis#delete_comment'
   get 'apis/get_all_comment_for_a_post/:post_id(/:limit/:offset)' => 'apis#get_all_comment_for_a_post'

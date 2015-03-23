@@ -104,8 +104,9 @@ class ApisController < ApplicationController
   # Task https://my.redmine.jp/mulodo/issues/21953
   # PUT/PATCH apis/:post_id/active_post/
   def active_post
-    params[:user_id] = session[:user_id] if session[:user_id].present?
-    render_need_login(Post.active_post(params[:post_id]))
+    post_params[:user_id] = session[:user_id] if session[:user_id].present?
+    post_params[:post_id] = params[:post_id] if params[:post_id].present?
+    render_need_login(Post.active_post(post_params))
   end
   # Task https://my.redmine.jp/mulodo/issues/21960
   # GET apis/get_list_post(/:limit/:offset)
