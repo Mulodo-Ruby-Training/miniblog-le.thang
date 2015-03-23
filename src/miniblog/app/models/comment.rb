@@ -5,7 +5,8 @@ class Comment < ActiveRecord::Base
 
   accepts_nested_attributes_for :post
 
-  validates :content, presence: true, uniqueness: true, length: {minimum: 15}
+  validates :content, presence: true, length: {minimum: 15}
+  validates_uniqueness_of :content, on: :create
 
   # https://my.redmine.jp/mulodo/issues/21964
   # Coding/実装 #21964: Add Comment
