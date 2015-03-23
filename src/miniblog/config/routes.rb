@@ -19,7 +19,12 @@ Rails.application.routes.draw do
   get 'apis/get_all_post_for_user/:user_id(/:limit/:offset)' => 'apis#get_all_post_for_user'
   match 'apis/:post_id/update_post' => 'apis#update_post', via:[:put,:patch]
   match 'apis/:post_id/active_post' => 'apis#active_post', via:[:put,:patch]
-
+  # ================ User Routes ================= #
+  post 'apis/create_comment' => 'apis#create_comment'
+  match 'apis/:comment_id/update_comment' => 'apis#update_comment', via:[:put,:patch]
+  delete 'apis/:comment_id/delete_comment' => 'apis#delete_comment'
+  get 'apis/get_all_comment_for_a_post/:post_id(/:limit/:offset)' => 'apis#get_all_comment_for_a_post'
+  get 'apis/get_all_comment_for_user/:user_id(/:limit/:offset)' => 'apis#get_all_comment_for_user'
   # ================  Resource   ================= #
   # # User controller
   # get 'users/login'
@@ -28,9 +33,10 @@ Rails.application.routes.draw do
   # get 'users/update'
   # get 'users/change_permission'
   # # Post
+  resources :posts
   # get 'posts/new'
   # get 'posts/update'
-  # get 'posts/delete'
+  # delete 'posts/:id/delete' => 'posts#delete'
   # get 'posts/get_list'
   # get 'posts/post_of_user'
   # get 'posts/show'

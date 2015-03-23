@@ -1,4 +1,4 @@
-class PostsController < ApplicationController
+class PostsController < ApisController
   def index
   end
 
@@ -9,6 +9,11 @@ class PostsController < ApplicationController
   end
 
   def delete
+    # respond_to do |format|
+      # format.html { redirect_to apis_create_post_path }
+
+    render :text => delete_post[:meta]
+    # end
   end
 
   def get_list

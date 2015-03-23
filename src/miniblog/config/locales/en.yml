@@ -14,7 +14,7 @@ en:
     failed_link: "1003,This link is generated when most errors occur. The link will send the users to the original Login URL page. "
     session_expired: " 1004,Session is expired"
     username_or_password_failed: "1005,The password or username entered is invalid."
-    permission_not_enough: "1006,Your permission is not enough or  your account login incorrect own? "
+    permission_not_enough: "1006,Your permission is not enough to modifier or  your account login incorrect own? "
     alredy_logged_in: "1007,Account already exists. Do you want to log out."
     # ============= User Error Message ============= #
     user_existed: "2001,This username is already in used."
@@ -35,3 +35,9 @@ en:
     post_get_list_failed: "2506,Could not get list post."
     post_get_a_post_failed: "2507,Could not get this post."
     get_all_post_for_user: "2508,Could not get this post."
+    # ============= Post Error Message ============= #
+    comm_create_failed: '3002,Could not create comment. Please check your account it could be blocked. '
+    comm_update_failed: '3003,Could not update this comment.'
+    comm_delete_failed: '3004,Could not delete this comment.'
+    comm_for_a_post_failed: '3001,Could not get comment for this post.'
+    comm_for_user_failed: '3005,Could not get comment for this user.'
