@@ -1,0 +1,59 @@
+<%= form_for(User.new) do |f| %>
+    <div id="error_explanation">
+        <% unless (defined? (@user)).nil?  %>
+          <% if @user[:code] != 200
+             @user[:messages].to_a.each do |m| %>
+              <li><%=  m %></li>
+          <% end
+            end
+          %>
+        <% end %>
+    </div>
+
+    <div class="field">
+      <%= f.label :username %><br>
+      <%= f.text_field :username %>
+    </div>
+    <div class="field">
+      <%= f.label :password %><br>
+      <%= f.password_field :password %>
+    </div>
+    <div class="field">
+      <%= f.label :password_confirmation %><br>
+      <%= f.password_field :password_confirmation %>
+    </div>
+    <div class="field">
+      <%= f.label :email %><br>
+      <%= f.text_field :email %>
+    </div><div class="field">
+      <%= f.label :first_name %><br>
+      <%= f.text_field :first_name %>
+    </div>
+    <div class="field">
+      <%= f.label :last_name %><br>
+      <%= f.text_field :last_name %>
+    </div>
+    <div class="field">
+      <%= f.label :avatar %><br>
+      <%= f.text_field :avatar %>
+    </div>
+    <div class="field">
+      <%= f.label :gender %><br>
+      <%= f.text_field :gender %>
+    </div>
+    <div class="field">
+      <%= f.label :display_name %><br>
+      <%= f.text_field :display_name %>
+    </div>
+    <div class="field">
+      <%= f.label :birthday %><br>
+      <%= f.text_field :birthday %>
+    </div>
+    <div class="field">
+      <%= f.label :address %><br>
+      <%= f.text_field :address %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+<% end %>
