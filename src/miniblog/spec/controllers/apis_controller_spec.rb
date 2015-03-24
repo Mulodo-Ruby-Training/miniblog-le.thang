@@ -18,7 +18,7 @@ RSpec.describe ApisController, type: :controller do
     it 'Error validate' do
       # attributes[:password_confirmation] = '18121990'
       post :create_user, params_user
-      expect(JSON.parse(response.body)["meta"]["code"]).to eq 1000
+      expect(JSON.parse(response.body)["meta"]["code"]).to eq 1001
     end
   end
 

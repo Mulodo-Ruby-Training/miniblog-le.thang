@@ -34,7 +34,7 @@ RSpec.describe Comment, type: :model do
   describe '#get_all_comment_for_a_post' do
     let(:params) {FactoryGirl.attributes_for(:comment)}
     let(:comment) {Comment.create_comment(params)}
-    it 'create comment successful.' do
+    it 'get_all_comment_for_a_post successful.' do
       comment
       comm = Comment.get_all_comment_for_a_post(1,1,0)
       expect(comm[:meta][:code]).to eq 200
@@ -44,7 +44,7 @@ RSpec.describe Comment, type: :model do
   describe '#get_all_comment_for_user' do
     let(:params) {FactoryGirl.attributes_for(:comment)}
     let(:comment) {Comment.create_comment(params)}
-    it 'create comment successful.' do
+    it 'get_all_comment_for_user successful.' do
       comment
       comm = Comment.get_all_comment_for_user(1,1,0)
       expect(comm[:meta][:code]).to eq 200
